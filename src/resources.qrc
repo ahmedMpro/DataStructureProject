@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>image/cycle_header.jpeg</file>
+    </qresource>
+    <qresource prefix="/gifs">
+        <file>gifs/loading_wave.gif</file>
+    </qresource>
+</RCC>

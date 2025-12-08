@@ -1,4 +1,4 @@
-#include "disjoint_set.h"  // include header declaring DisjointSet
+#include "Logic/disjoint_set.h"  // include header declaring DisjointSet
 
 DisjointSet::DisjointSet(int size)  // constructor definition for DisjointSet
     : parent_(size),  // initialize parent array with required size

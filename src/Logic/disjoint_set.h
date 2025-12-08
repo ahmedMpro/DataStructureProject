@@ -2,8 +2,6 @@
 
 #include <vector>  // include vector to hold parent and rank arrays
 
-using namespace std;
-
 // DisjointSet class supports union-find operations with path compression and union by rank
 class DisjointSet {
 public:
