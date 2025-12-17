@@ -1,8 +1,8 @@
 #include "Logic/disjoint_set.h"  // include header declaring DisjointSet
 
 DisjointSet::DisjointSet(int size)  // constructor definition for DisjointSet
-    : parent_(size),  // initialize parent array with required size
-      rank_(size, 0)  // initialize rank array with zeros
+        : parent_(size),  // initialize parent array with required size
+            rank_(size, 0)  // initialize rank array with zeros
 {
     for (int index = 0; index < size; ++index) {  // fill parent array with each node as its own parent
         parent_[index] = index;  // set parent to self for root initialization

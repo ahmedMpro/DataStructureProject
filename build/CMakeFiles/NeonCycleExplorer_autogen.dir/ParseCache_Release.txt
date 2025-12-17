@@ -2,7 +2,6 @@
 D:/DataStructureProject/src/main.cpp
 D:/DataStructureProject/src/Logic/disjoint_set.h
 D:/DataStructureProject/src/Logic/graph.h
-D:/DataStructureProject/src/Logic/graph.cpp
 D:/DataStructureProject/src/gui_qt/edgeitem.h
  mmc:Q_OBJECT
  mdp:C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/assert.h
@@ -214,6 +213,7 @@ D:/DataStructureProject/src/gui_qt/edgeitem.h
  mdp:C:/Qt/6.10.1/msvc2022_64/include/QtWidgets/qtwidgetsexports.h
  mdp:C:/Qt/6.10.1/msvc2022_64/include/QtWidgets/qtwidgetsglobal.h
  mdp:D:/DataStructureProject/src/gui_qt/edgeitem.h
+D:/DataStructureProject/src/Logic/graph.cpp
 D:/DataStructureProject/src/gui_qt/graphwindow.h
  mmc:Q_OBJECT
  mdp:C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/assert.h
@@ -273,6 +273,7 @@ D:/DataStructureProject/src/gui_qt/graphwindow.h
  mdp:C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/include/version
  mdp:C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/include/yvals.h
  mdp:C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/include/yvals_core.h
+ mdp:C:/Qt/6.10.1/msvc2022_64/include/QtCore/QString
  mdp:C:/Qt/6.10.1/msvc2022_64/include/QtCore/QVector
  mdp:C:/Qt/6.10.1/msvc2022_64/include/QtCore/q17memory.h
  mdp:C:/Qt/6.10.1/msvc2022_64/include/QtCore/q20functional.h
@@ -436,7 +437,6 @@ D:/DataStructureProject/src/gui_qt/graphwindow.h
  mdp:C:/Qt/6.10.1/msvc2022_64/include/QtWidgets/qwidget.h
  mdp:D:/DataStructureProject/src/Logic/graph.h
  mdp:D:/DataStructureProject/src/gui_qt/graphwindow.h
-D:/DataStructureProject/src/Logic/disjoint_set.cpp
 D:/DataStructureProject/src/gui_qt/nodeitem.h
  mmc:Q_OBJECT
  mdp:C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt/assert.h
@@ -653,6 +653,7 @@ D:/DataStructureProject/src/gui_qt/nodeitem.h
  mdp:C:/Qt/6.10.1/msvc2022_64/include/QtWidgets/qtwidgetsexports.h
  mdp:C:/Qt/6.10.1/msvc2022_64/include/QtWidgets/qtwidgetsglobal.h
  mdp:D:/DataStructureProject/src/gui_qt/nodeitem.h
+D:/DataStructureProject/src/Logic/disjoint_set.cpp
 D:/DataStructureProject/src/Logic/console_demo.cpp
 D:/DataStructureProject/src/gui_qt/edgeitem.cpp
 D:/DataStructureProject/src/gui_qt/graphwindow.cpp

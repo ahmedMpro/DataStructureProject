@@ -56,6 +56,7 @@ D:/DataStructureProject/build/NeonCycleExplorer_autogen/include_Release/422WX3E6
   C:/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/VC/Tools/MSVC/14.44.35207/include/version \
   C:/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/VC/Tools/MSVC/14.44.35207/include/yvals.h \
   C:/Program\ Files/Microsoft\ Visual\ Studio/2022/Community/VC/Tools/MSVC/14.44.35207/include/yvals_core.h \
+  C:/Qt/6.10.1/msvc2022_64/include/QtCore/QString \
   C:/Qt/6.10.1/msvc2022_64/include/QtCore/QVector \
   C:/Qt/6.10.1/msvc2022_64/include/QtCore/q17memory.h \
   C:/Qt/6.10.1/msvc2022_64/include/QtCore/q20functional.h \

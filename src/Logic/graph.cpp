@@ -1,10 +1,8 @@
 #include "Logic/graph.h"
 #include "Logic/disjoint_set.h"
 
-using namespace std;
-
 namespace {
-    static void collectNeighbors(const Graph::AdjNode* head, vector<int>& out) {
+    static void collectNeighbors(const Graph::AdjNode* head, QVector<int>& out) {
         const Graph::AdjNode* current = head;
         while (current) {
             out.push_back(current->dest);
@@ -178,8 +176,8 @@ bool Graph::detectCycleUndirected() const {
 }
 
 bool Graph::detectCycleDirected() const {
-    vector<bool> visited(vertexCount_, false);
-    vector<bool> recursionStack(vertexCount_, false);
+    QVector<bool> visited(vertexCount_, false);
+    QVector<bool> recursionStack(vertexCount_, false);
 
     for (int vertex = 0; vertex < vertexCount_; ++vertex) {
         if (!visited[vertex]) {
@@ -192,7 +190,7 @@ bool Graph::detectCycleDirected() const {
     return false;
 }
 
-bool Graph::depthFirstDetectDirected(int vertex, vector<bool>& visited, vector<bool>& recursionStack) const {
+bool Graph::depthFirstDetectDirected(int vertex, QVector<bool>& visited, QVector<bool>& recursionStack) const {
     visited[vertex] = true;
     recursionStack[vertex] = true;
 
@@ -229,8 +227,8 @@ int Graph::vertexCount() const {
     return vertexCount_;
 }
 
-vector<vector<int>> Graph::getAdjacencyList() const {
-    vector<vector<int>> view(vertexCount_);
+QVector<QVector<int>> Graph::getAdjacencyList() const {
+    QVector<QVector<int>> view(vertexCount_);
     if (!adjacency_) {
         return view;
     }
@@ -240,11 +238,11 @@ vector<vector<int>> Graph::getAdjacencyList() const {
     return view;
 }
 
-const string& Graph::getLastError() const {
+const QString& Graph::getLastError() const {
     return lastError_;
 }
 
-void Graph::setError(const string& message) const {
+void Graph::setError(const QString& message) const {
     lastError_ = message;
 }
 
