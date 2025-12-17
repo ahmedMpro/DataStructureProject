@@ -1,11 +1,14 @@
 #pragma once
 
 #include <QObject>
+#include <QBrush>
 #include <QFont>
 #include <QGraphicsEllipseItem>
+#include <QPen>
 #include <QVariant>
 
 class QGraphicsSceneMouseEvent;
+class QColor;
 
 class NodeItem : public QObject, public QGraphicsEllipseItem {
     Q_OBJECT
@@ -13,6 +16,9 @@ class NodeItem : public QObject, public QGraphicsEllipseItem {
 public:
     explicit NodeItem(int index, QGraphicsItem* parent = nullptr);
     int index() const noexcept { return index_; }
+    void setIndex(int index) noexcept { index_ = index; update(); }
+    void highlight(const QColor& fill, const QColor& stroke);
+    void resetAppearance();
 
 signals:
     void clicked(int index);
@@ -29,4 +35,6 @@ private:
     int index_;
     bool dragging_{false};
     QFont textFont_;
+    QBrush defaultBrush_;
+    QPen defaultPen_;
 };

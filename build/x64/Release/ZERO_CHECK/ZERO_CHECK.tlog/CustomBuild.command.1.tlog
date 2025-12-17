@@ -1,0 +1,10 @@
+^D:\DATASTRUCTUREPROJECT\BUILD\CMAKEFILES\42A6454B55EE4083CA7EBBA5C1A15A89\GENERATE.STAMP.RULE
+setlocal
+C:\Qt\Tools\CMake_64\bin\cmake.exe -SD:/DataStructureProject/src -BD:/DataStructureProject/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/DataStructureProject/build/NeonCycleExplorer.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

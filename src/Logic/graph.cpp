@@ -1,169 +1,253 @@
-#include "Logic/graph.h"  // include the header declaring Graph interfaces
-#include "Logic/disjoint_set.h"  // include the Disjoint Set implementation needed only in this translation unit
+#include "Logic/graph.h"
+#include "Logic/disjoint_set.h"
 
-using namespace std;  // remain within the implementation file to keep headers clean
+using namespace std;
 
-Graph::Graph(int vertexCount, bool isDirected)  // define constructor that takes number of vertices and direction flag
-    : vertexCount_(0),  // default to zero until configuration is validated
-      isDirected_(isDirected),  // store whether the caller wants a directed or undirected graph
-      adjacencyList_(),  // will be sized by configure
-      lastError_()  // start with no error
-{
-    configure(vertexCount, isDirected);  // reuse configuration logic to initialize storage safely
+namespace {
+    static void collectNeighbors(const Graph::AdjNode* head, vector<int>& out) {
+        const Graph::AdjNode* current = head;
+        while (current) {
+            out.push_back(current->dest);
+            current = current->next;
+        }
+    }
 }
 
-bool Graph::configure(int vertexCount, bool isDirected)  // allow GUI to reconfigure the graph on demand
-{
-    if (vertexCount < 0) {  // reject negative vertex counts because vectors cannot have negative sizes
-        setError("Vertex count cannot be negative.");  // store explanation for GUI display
-        vertexCount_ = 0;  // reset to a safe value
-        adjacencyList_.clear();  // ensure adjacency list matches the safe count
-        return false;  // signal configuration failure
-    }
-
-    vertexCount_ = vertexCount;  // store the validated vertex count
-    isDirected_ = isDirected;  // store updated direction flag
-    adjacencyList_.assign(vertexCount_, vector<int>());  // resize adjacency list to match the new vertex count
-    clearError();  // configuration succeeded, clear any previous error
-    return true;  // report success to the caller (GUI)
+Graph::Graph(int vertexCount, bool isDirected)
+    : vertexCount_(0), isDirected_(isDirected), adjacency_(nullptr), lastError_() {
+    configure(vertexCount, isDirected);
 }
 
-void Graph::clearEdges()  // drop all edges while retaining the current vertex configuration
-{
-    for (vector<int>& neighbors : adjacencyList_) {  // iterate over every adjacency bucket
-        neighbors.clear();  // remove stored neighbors while keeping capacity for reuse
-    }
-
-    clearError();  // clearing edges is always safe, so reset error state
+Graph::~Graph() {
+    clearAdjacency();
 }
 
-bool Graph::addEdge(int source, int destination)  // define method to add an edge whose behavior depends on the graph type
-{
-    if (!isValidVertex(source) || !isValidVertex(destination)) {  // verify both endpoints fall inside the adjacency list bounds
-        setError("Ignored edge with out-of-range endpoint(s).");  // record issue so GUI can display it
-        return false;  // stop processing because the edge would corrupt memory
+bool Graph::configure(int vertexCount, bool isDirected) {
+    if (vertexCount < 0) {
+        setError("Vertex count cannot be negative.");
+        clearAdjacency();
+        vertexCount_ = 0;
+        adjacency_ = nullptr;
+        return false;
     }
 
-    adjacencyList_[source].push_back(destination);  // always add the forward edge from source to destination
+    clearAdjacency();
+    vertexCount_ = vertexCount;
+    isDirected_ = isDirected;
 
-    if (!isDirected_) {  // only add the reverse connection when the graph is undirected
-        adjacencyList_[destination].push_back(source);  // add source to destination neighbors (undirected)
+    if (vertexCount_ > 0) {
+        adjacency_ = new AdjNode*[vertexCount_];
+        for (int i = 0; i < vertexCount_; ++i) {
+            adjacency_[i] = nullptr;
+        }
+    } else {
+        adjacency_ = nullptr;
     }
 
-    clearError();  // edge insertion succeeded, clear previous errors
-    return true;  // return success so GUI buttons can react accordingly
+    clearError();
+    return true;
 }
 
-bool Graph::detectCycle() const  // dispatch cycle detection based on whether the graph is directed
-{
-    if (vertexCount_ <= 0) {  // empty graphs cannot contain cycles, but ensure error state is reset
-        clearError();  // no issue detected
-        return false;  // nothing to process
+void Graph::clearAdjacency() {
+    if (!adjacency_) {
+        return;
     }
 
-    if (isDirected_) {  // for directed graphs, use DFS-based detection
-        return detectCycleDirected();  // call helper specialized for directed cycles
+    for (int i = 0; i < vertexCount_; ++i) {
+        AdjNode* current = adjacency_[i];
+        while (current) {
+            AdjNode* toDelete = current;
+            current = current->next;
+            delete toDelete;
+        }
+        adjacency_[i] = nullptr;
     }
-
-    return detectCycleUndirected();  // otherwise fall back to the Union-Find strategy for undirected graphs
+    delete[] adjacency_;
+    adjacency_ = nullptr;
 }
 
-bool Graph::detectCycleUndirected() const  // define cycle detection using Disjoint Set Union-Find
-{
-    DisjointSet set(vertexCount_);  // create Disjoint Set managing every vertex
+void Graph::clearEdges() {
+    clearAdjacency();
+    if (vertexCount_ > 0) {
+        adjacency_ = new AdjNode*[vertexCount_];
+        for (int i = 0; i < vertexCount_; ++i) {
+            adjacency_[i] = nullptr;
+        }
+    }
+    clearError();
+}
 
-    for (int vertex = 0; vertex < vertexCount_; ++vertex) {  // iterate over each vertex
-        for (int neighbor : adjacencyList_[vertex]) {  // iterate over every adjacent vertex
-            if (vertex == neighbor) {  // immediately treat self-loops as cycles because they form a closed path of length one
-                return true;  // report cycle without further processing
+void Graph::appendNeighbor(int source, int destination) {
+    AdjNode* node = new AdjNode{destination, adjacency_[source]};
+    adjacency_[source] = node;
+}
+
+bool Graph::addEdge(int source, int destination) {
+    if (!isValidVertex(source) || !isValidVertex(destination)) {
+        setError("Ignored edge with out-of-range endpoint(s).");
+        return false;
+    }
+
+    appendNeighbor(source, destination);
+    if (!isDirected_) {
+        appendNeighbor(destination, source);
+    }
+
+    clearError();
+    return true;
+}
+
+bool Graph::removeEdge(int source, int destination) {
+    if (!isValidVertex(source) || !isValidVertex(destination)) {
+        setError("Ignored removal with out-of-range endpoint(s).");
+        return false;
+    }
+
+    auto removeNeighbor = [this](int from, int to) {
+        AdjNode* prev = nullptr;
+        AdjNode* current = adjacency_[from];
+        while (current) {
+            if (current->dest == to) {
+                if (prev) {
+                    prev->next = current->next;
+                } else {
+                    adjacency_[from] = current->next;
+                }
+                delete current;
+                return true;
+            }
+            prev = current;
+            current = current->next;
+        }
+        return false;
+    };
+
+    bool removed = removeNeighbor(source, destination);
+    if (!isDirected_) {
+        removeNeighbor(destination, source);
+    }
+
+    if (removed) {
+        clearError();
+        return true;
+    }
+
+    setError("Ignored removal for non-existent edge.");
+    return false;
+}
+
+bool Graph::detectCycle() const {
+    if (vertexCount_ <= 0) {
+        clearError();
+        return false;
+    }
+
+    if (isDirected_) {
+        return detectCycleDirected();
+    }
+
+    return detectCycleUndirected();
+}
+
+bool Graph::detectCycleUndirected() const {
+    DisjointSet set(vertexCount_);
+
+    for (int vertex = 0; vertex < vertexCount_; ++vertex) {
+        const AdjNode* current = adjacency_ ? adjacency_[vertex] : nullptr;
+        while (current) {
+            const int neighbor = current->dest;
+            if (vertex == neighbor) {
+                return true;  // self-loop
             }
 
-            if (vertex < neighbor) {  // process each undirected edge only once by enforcing an ordering
-                int rootSource = set.find(vertex);  // find root of the current vertex
-                int rootDestination = set.find(neighbor);  // find root of the neighboring vertex
+            if (vertex < neighbor) {  // process each undirected edge once
+                int rootSource = set.find(vertex);
+                int rootDestination = set.find(neighbor);
 
-                if (rootSource == rootDestination) {  // if both vertices share the same root
-                    return true;  // cycle detected because adding edge creates a loop
+                if (rootSource == rootDestination) {
+                    return true;
                 }
 
-                set.unionSets(rootSource, rootDestination);  // otherwise, merge the two sets
+                set.unionSets(rootSource, rootDestination);
+            }
+            current = current->next;
+        }
+    }
+
+    return false;
+}
+
+bool Graph::detectCycleDirected() const {
+    vector<bool> visited(vertexCount_, false);
+    vector<bool> recursionStack(vertexCount_, false);
+
+    for (int vertex = 0; vertex < vertexCount_; ++vertex) {
+        if (!visited[vertex]) {
+            if (depthFirstDetectDirected(vertex, visited, recursionStack)) {
+                return true;
             }
         }
     }
 
-    return false;  // after processing all edges without finding a cycle, return false
+    return false;
 }
 
-bool Graph::detectCycleDirected() const  // define directed cycle detection via depth-first search with recursion stack
-{
-    vector<bool> visited(vertexCount_, false);  // track which vertices have been fully visited
-    vector<bool> recursionStack(vertexCount_, false);  // track the recursion stack to catch back edges
+bool Graph::depthFirstDetectDirected(int vertex, vector<bool>& visited, vector<bool>& recursionStack) const {
+    visited[vertex] = true;
+    recursionStack[vertex] = true;
 
-    for (int vertex = 0; vertex < vertexCount_; ++vertex) {  // iterate through all vertices to cover disconnected components
-        if (!visited[vertex]) {  // start a DFS only if the vertex has not been visited yet
-            if (depthFirstDetectDirected(vertex, visited, recursionStack)) {  // run recursive helper and check if it reports a cycle
-                return true;  // propagate the discovery immediately
-            }
+    const AdjNode* current = adjacency_ ? adjacency_[vertex] : nullptr;
+    while (current) {
+        const int neighbor = current->dest;
+        if (vertex == neighbor) {
+            return true;  // self-loop
         }
+
+        if (!visited[neighbor]) {
+            if (depthFirstDetectDirected(neighbor, visited, recursionStack)) {
+                return true;
+            }
+        } else if (recursionStack[neighbor]) {
+            return true;
+        }
+        current = current->next;
     }
 
-    return false;  // if every DFS finished without finding a cycle, report false
+    recursionStack[vertex] = false;
+    return false;
 }
 
-bool Graph::depthFirstDetectDirected(int vertex, vector<bool>& visited, vector<bool>& recursionStack) const  // recursive DFS helper
-{
-    visited[vertex] = true;  // mark the current vertex as visited to avoid reprocessing it within other branches
-    recursionStack[vertex] = true;  // mark the vertex as currently in the recursion stack
-
-    for (int neighbor : adjacencyList_[vertex]) {  // inspect each outgoing edge from the current vertex
-        if (vertex == neighbor) {  // if the edge points to the same vertex, it forms a self-loop cycle
-            return true;  // immediately signal cycle presence
-        }
-
-        if (!visited[neighbor]) {  // proceed only if the neighbor has not been visited yet
-            if (depthFirstDetectDirected(neighbor, visited, recursionStack)) {  // recursively explore deeper paths
-                return true;  // bubble up the positive result if a cycle is found deeper in the recursion
-            }
-        } else if (recursionStack[neighbor]) {  // if the neighbor is in the current recursion stack, a back edge exists
-            return true;  // detect the cycle formed by the back edge
-        }
-    }
-
-    recursionStack[vertex] = false;  // unmark the vertex when backtracking out of the recursion stack
-    return false;  // no cycle found along this path
+bool Graph::isValidVertex(int index) const {
+    return index >= 0 && index < vertexCount_;
 }
 
-bool Graph::isValidVertex(int index) const  // helper definition kept in the implementation file
-{
-    return index >= 0 && index < vertexCount_;  // vertex is valid when it falls inside the inclusive-exclusive range [0, vertexCount_)
-}
-
-bool Graph::isDirected() const  // expose whether edges are interpreted as directed
-{
+bool Graph::isDirected() const {
     return isDirected_;
 }
 
-int Graph::vertexCount() const  // expose number of vertices for GUI controls
-{
+int Graph::vertexCount() const {
     return vertexCount_;
 }
 
-const vector<vector<int>>& Graph::getAdjacencyList() const  // provide read-only access to adjacency data
-{
-    return adjacencyList_;
+vector<vector<int>> Graph::getAdjacencyList() const {
+    vector<vector<int>> view(vertexCount_);
+    if (!adjacency_) {
+        return view;
+    }
+    for (int vertex = 0; vertex < vertexCount_; ++vertex) {
+        collectNeighbors(adjacency_[vertex], view[vertex]);
+    }
+    return view;
 }
 
-const string& Graph::getLastError() const  // expose last error for GUI labels
-{
+const string& Graph::getLastError() const {
     return lastError_;
 }
 
-void Graph::setError(const string& message) const  // helper for recording last error message
-{
+void Graph::setError(const string& message) const {
     lastError_ = message;
 }
 
-void Graph::clearError() const  // reset last error to an empty string
-{
+void Graph::clearError() const {
     lastError_.clear();
 }

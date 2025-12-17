@@ -1,6 +1,7 @@
 #include "nodeitem.h"
 
 #include <QBrush>
+#include <QColor>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QPen>
@@ -21,6 +22,8 @@ NodeItem::NodeItem(int index, QGraphicsItem* parent)
 {
     setBrush(kNodeFill);
     setPen(QPen(kNodeStroke, 2.5));
+    defaultBrush_ = brush();
+    defaultPen_ = pen();
     setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemSendsScenePositionChanges |
              QGraphicsItem::ItemIsSelectable);
     setAcceptHoverEvents(true);
@@ -66,4 +69,18 @@ void NodeItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
     painter->setPen(kNodeTextColor);
     painter->setFont(textFont_);
     painter->drawText(boundingRect(), Qt::AlignCenter, QString::number(index_));
+}
+
+void NodeItem::highlight(const QColor& fill, const QColor& stroke)
+{
+    setBrush(fill);
+    setPen(QPen(stroke, 3.4));
+    update();
+}
+
+void NodeItem::resetAppearance()
+{
+    setBrush(defaultBrush_);
+    setPen(defaultPen_);
+    update();
 }

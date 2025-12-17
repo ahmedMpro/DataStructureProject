@@ -1,8 +1,11 @@
 #include "edgeitem.h"
 #include "nodeitem.h"
 
+#include <QColor>
+#include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QPolygonF>
+#include <QtCore/Qt>
 #include <QtMath>
 #include <cmath>
 
@@ -14,14 +17,16 @@ constexpr qreal kPi = 3.14159265358979323846;
 }
 
 EdgeItem::EdgeItem(NodeItem* source, NodeItem* target, bool directed, QGraphicsItem* parent)
-    : QGraphicsLineItem(parent),
-      source_(source),
-      target_(target),
-      directed_(directed),
-      pen_(kEdgeColor, 3, Qt::SolidLine, Qt::RoundCap)
+        : QObject(nullptr),
+            QGraphicsLineItem(parent),
+            source_(source),
+            target_(target),
+            directed_(directed),
+            pen_(kEdgeColor, 3, Qt::SolidLine, Qt::RoundCap)
 {
     setZValue(0);
     setDirected(directed);
+        defaultPen_ = pen_;
     updatePosition();
 }
 
@@ -39,6 +44,7 @@ void EdgeItem::setDirected(bool directed) noexcept
 {
     directed_ = directed;
     pen_.setColor(directed_ ? kDirectedEdgeColor : kEdgeColor);
+    defaultPen_ = pen_;
     setPen(pen_);
     update();
 }
@@ -69,4 +75,28 @@ void EdgeItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
     painter->setBrush(pen_.color());
     painter->setPen(Qt::NoPen);
     painter->drawPolygon(arrowHead);
+}
+
+void EdgeItem::highlight(const QColor& color)
+{
+    pen_ = defaultPen_;
+    pen_.setColor(color);
+    pen_.setWidthF(defaultPen_.widthF() + 1.5);
+    setPen(pen_);
+    update();
+}
+
+void EdgeItem::resetAppearance()
+{
+    pen_ = defaultPen_;
+    setPen(pen_);
+    update();
+}
+
+void EdgeItem::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+    if (event && event->button() == Qt::LeftButton) {
+        emit clicked(this);
+    }
+    QGraphicsLineItem::mousePressEvent(event);
 }
