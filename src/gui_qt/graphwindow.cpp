@@ -415,7 +415,7 @@ bool GraphWindow::prepareAnimationSteps()
 
 bool GraphWindow::collectDirectedSteps(int vertex, QVector<bool>& visited, QVector<bool>& recursionStack)
 {
-    auto adjacency = graph_.getAdjacencyList();
+    const auto& adjacency = graph_.getAdjacencyList();
     animationSteps_.append({AnimationStep::Type::NodeVisit, vertex});
     visited[vertex] = true;
     recursionStack[vertex] = true;
@@ -442,7 +442,7 @@ bool GraphWindow::collectDirectedSteps(int vertex, QVector<bool>& visited, QVect
 
 bool GraphWindow::collectUndirectedSteps()
 {
-    auto adjacency = graph_.getAdjacencyList();
+    const auto& adjacency = graph_.getAdjacencyList();
     DisjointSet set(vertexCount_);
 
     for (int source = 0; source < vertexCount_; ++source) {
@@ -716,7 +716,7 @@ void GraphWindow::logCycleDetection()
     stream << tr("Cycle detected: %1\n").arg(animationDetectedCycle_ ? tr("Yes") : tr("No"));
     stream << "Sets:\n";
 
-    auto adjacency = graph_.getAdjacencyList();
+    const auto& adjacency = graph_.getAdjacencyList();
     DisjointSet disjointSet(vertexCount_);
     for (int source = 0; source < adjacency.size(); ++source) {
         for (int target : adjacency[source]) {

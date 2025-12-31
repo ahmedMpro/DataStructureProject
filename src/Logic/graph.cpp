@@ -139,6 +139,8 @@ bool Graph::detectCycle() const {
         clearError();
         return false;
     }
+    
+
 
     if (isDirected_) {
         return detectCycleDirected();
@@ -227,8 +229,8 @@ int Graph::vertexCount() const {
     return vertexCount_;
 }
 
-QVector<QVector<int>> Graph::getAdjacencyList() const {
-    QVector<QVector<int>> view(vertexCount_);
+vector<vector<int>> Graph::getAdjacencyList() const {
+    vector<vector<int>> view(vertexCount_);
     if (!adjacency_) {
         return view;
     }
@@ -238,11 +240,11 @@ QVector<QVector<int>> Graph::getAdjacencyList() const {
     return view;
 }
 
-const QString& Graph::getLastError() const {
+const string& Graph::getLastError() const {
     return lastError_;
 }
 
-void Graph::setError(const QString& message) const {
+void Graph::setError(const string& message) const {
     lastError_ = message;
 }
 

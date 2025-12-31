@@ -97,3 +97,266 @@ Vertices:
   Vertex 4: 3, 5
   Vertex 5: 1
 
+--------------------------------------------
+Timestamp: 2025-12-17T22:18:34
+Vertex count: 6
+Cycle detected: No
+Sets:
+  Set 1: 0
+  Set 2: 1
+  Set 3: 2, 4
+  Set 4: 3
+  Set 5: 5
+Vertices:
+  Vertex 0: None
+  Vertex 1: None
+  Vertex 2: 4
+  Vertex 3: None
+  Vertex 4: 2
+  Vertex 5: None
+
+--------------------------------------------
+Timestamp: 2025-12-17T22:20:05
+Vertex count: 6
+Cycle detected: Yes
+Sets:
+  Set 1: 0
+  Set 2: 1, 2, 4
+  Set 3: 3
+  Set 4: 5
+Vertices:
+  Vertex 0: None
+  Vertex 1: 4, 2
+  Vertex 2: 1, 4
+  Vertex 3: None
+  Vertex 4: 1, 2
+  Vertex 5: None
+
+--------------------------------------------
+Timestamp: 2025-12-17T22:24:25
+Vertex count: 6
+Cycle detected: Yes
+Sets:
+  Set 1: 0
+  Set 2: 1, 2, 4
+  Set 3: 3
+  Set 4: 5
+Vertices:
+  Vertex 0: None
+  Vertex 1: 4
+  Vertex 2: 1
+  Vertex 3: None
+  Vertex 4: 2
+  Vertex 5: None
+
+--------------------------------------------
+Timestamp: 2025-12-19T00:39:25
+Vertex count: 5
+Cycle detected: Yes
+Sets:
+  Set 1: 0
+  Set 2: 1, 2, 3
+  Set 3: 4
+Vertices:
+  Vertex 0: None
+  Vertex 1: 3, 2
+  Vertex 2: 1, 3
+  Vertex 3: 1, 2
+  Vertex 4: None
+
+--------------------------------------------
+Timestamp: 2025-12-19T00:39:35
+Vertex count: 5
+Cycle detected: No
+Sets:
+  Set 1: 0
+  Set 2: 1
+  Set 3: 2, 3
+  Set 4: 4
+Vertices:
+  Vertex 0: None
+  Vertex 1: None
+  Vertex 2: 3
+  Vertex 3: 2
+  Vertex 4: None
+
+--------------------------------------------
+Timestamp: 2025-12-19T00:40:18
+Vertex count: 3
+Cycle detected: No
+Sets:
+  Set 1: 0, 1, 2
+Vertices:
+  Vertex 0: None
+  Vertex 1: 0
+  Vertex 2: 1
+
+--------------------------------------------
+Timestamp: 2025-12-19T00:41:04
+Vertex count: 5
+Cycle detected: No
+Sets:
+  Set 1: 0, 1, 2, 3, 4
+Vertices:
+  Vertex 0: None
+  Vertex 1: 0, 2
+  Vertex 2: None
+  Vertex 3: 4, 2
+  Vertex 4: 0
+
+--------------------------------------------
+Timestamp: 2025-12-19T21:53:16
+Vertex count: 4
+Cycle detected: No
+Sets:
+  Set 1: 0, 1, 2, 3
+Vertices:
+  Vertex 0: 3
+  Vertex 1: 2, 0
+  Vertex 2: 3
+  Vertex 3: None
+
+--------------------------------------------
+Timestamp: 2025-12-19T22:05:46
+Vertex count: 4
+Cycle detected: Yes
+Sets:
+  Set 1: 0, 1, 2, 3
+Vertices:
+  Vertex 0: 1
+  Vertex 1: 2
+  Vertex 2: 3
+  Vertex 3: 0
+
+--------------------------------------------
+Timestamp: 2025-12-19T22:12:29
+Vertex count: 3
+Cycle detected: No
+Sets:
+  Set 1: 0, 1, 2
+Vertices:
+  Vertex 0: None
+  Vertex 1: 0
+  Vertex 2: 0, 1
+
+--------------------------------------------
+Timestamp: 2025-12-19T23:01:27
+Vertex count: 5
+Cycle detected: Yes
+Sets:
+  Set 1: 0, 1, 2, 3, 4
+Vertices:
+  Vertex 0: 1, 4
+  Vertex 1: 2, 0
+  Vertex 2: 3, 1
+  Vertex 3: 2, 4
+  Vertex 4: 0, 3
+
+--------------------------------------------
+Timestamp: 2025-12-20T09:04:35
+Vertex count: 5
+Cycle detected: Yes
+Sets:
+  Set 1: 0, 1, 2, 3, 4
+Vertices:
+  Vertex 0: 1
+  Vertex 1: 2
+  Vertex 2: 3
+  Vertex 3: 4
+  Vertex 4: 0
+
+--------------------------------------------
+Timestamp: 2025-12-20T11:15:00
+Vertex count: 5
+Cycle detected: Yes
+Sets:
+  Set 1: 0, 1, 2, 3, 4
+Vertices:
+  Vertex 0: 1, 4
+  Vertex 1: 2, 0
+  Vertex 2: 3, 1
+  Vertex 3: 2, 4
+  Vertex 4: 0, 3
+
+--------------------------------------------
+Timestamp: 2025-12-20T11:27:02
+Vertex count: 6
+Cycle detected: Yes
+Sets:
+  Set 1: 0
+  Set 2: 1, 2, 3, 4, 5
+Vertices:
+  Vertex 0: None
+  Vertex 1: 4
+  Vertex 2: 4
+  Vertex 3: 5, 4
+  Vertex 4: 3, 4, 4, 2, 1
+  Vertex 5: 3
+
+--------------------------------------------
+Timestamp: 2025-12-20T11:28:25
+Vertex count: 6
+Cycle detected: No
+Sets:
+  Set 1: 0
+  Set 2: 1, 2, 3, 4, 5
+Vertices:
+  Vertex 0: None
+  Vertex 1: 4
+  Vertex 2: 4
+  Vertex 3: 4, 5
+  Vertex 4: 1, 2, 3
+  Vertex 5: 3
+
+--------------------------------------------
+Timestamp: 2025-12-20T11:38:16
+Vertex count: 5
+Cycle detected: No
+Sets:
+  Set 1: 0, 1, 2, 3, 4
+Vertices:
+  Vertex 0: 3
+  Vertex 1: None
+  Vertex 2: None
+  Vertex 3: 2, 1, 4
+  Vertex 4: 1
+
+--------------------------------------------
+Timestamp: 2025-12-20T11:38:34
+Vertex count: 5
+Cycle detected: Yes
+Sets:
+  Set 1: 0, 1, 2, 3, 4
+Vertices:
+  Vertex 0: 3
+  Vertex 1: None
+  Vertex 2: 0
+  Vertex 3: 2, 1, 4
+  Vertex 4: 1
+
+--------------------------------------------
+Timestamp: 2025-12-21T00:30:45
+Vertex count: 5
+Cycle detected: Yes
+Sets:
+  Set 1: 0, 1, 2, 3, 4
+Vertices:
+  Vertex 0: 1, 4
+  Vertex 1: 2, 0
+  Vertex 2: 3, 1
+  Vertex 3: 2, 4
+  Vertex 4: 0, 3
+
+--------------------------------------------
+Timestamp: 2025-12-21T00:31:00
+Vertex count: 5
+Cycle detected: No
+Sets:
+  Set 1: 0, 1, 2, 3, 4
+Vertices:
+  Vertex 0: None
+  Vertex 1: 2
+  Vertex 2: 0
+  Vertex 3: 4
+  Vertex 4: 1
+

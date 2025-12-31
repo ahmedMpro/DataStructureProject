@@ -18,7 +18,8 @@
           "text": "-enable-pretty-printing",
           "ignoreFailures": true
         }
-      ]
+      ],
+      "visualizerFile": "c:\\Users\\qlsah\\AppData\\Roaming\\Code\\User\\workspaceStorage\\8bf9759ac2f3b4fa851080cf2d8acb59\\tonka3000.qtvsctools\\qt.natvis.xml"
     }
   ]
 }

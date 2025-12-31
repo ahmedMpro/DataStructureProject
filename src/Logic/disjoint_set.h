@@ -1,17 +1,17 @@
 #pragma once
 
-#include <QVector>  // use Qt container to avoid STL
+#include <QVector>  
 
-// DisjointSet class supports union-find operations with path compression and union by rank
+
 class DisjointSet {
 public:
-    explicit DisjointSet(int size);  // constructor that initializes tables with given size
+    explicit DisjointSet(int size);  
 
-    int find(int node);  // find operation with path compression
+    int find(int node);  
 
-    void unionSets(int firstRoot, int secondRoot);  // union by rank operation
+    void unionSets(int firstRoot, int secondRoot);  
 
 private:
-    QVector<int> parent_;  // parent array storing representative for each node
-    QVector<int> rank_;  // rank array guiding union to keep trees shallow
+    QVector<int> parent_;  
+    QVector<int> rank_;  
 };

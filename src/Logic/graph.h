@@ -1,9 +1,8 @@
 #pragma once
 using namespace std;
-#include <QVector>   // use Qt containers instead of STL vectors
-#include <QString>   // use Qt string instead of std::string
+#include <QVector>
+#include <QString>
 
-// Graph class represents a graph that can be directed or undirected using an adjacency list
 class Graph {
 public:
     struct AdjNode {
@@ -11,34 +10,34 @@ public:
         AdjNode* next;
     };
 
-    Graph(int vertexCount = 0, bool isDirected = false);  // constructor that records vertex count and edge direction mode
-    ~Graph();  // destructor to free adjacency lists
+    Graph(int vertexCount = 0, bool isDirected = false);
+    ~Graph();
 
-    bool configure(int vertexCount, bool isDirected);  // allow GUI to reconfigure vertex/direction without recreating object
-    void clearEdges();  // drop all existing edges while keeping current configuration
-    bool addEdge(int source, int destination);  // method to add an edge and report validation errors
-    bool removeEdge(int source, int destination);  // allow the UI to remove an existing edge
+    bool configure(int vertexCount, bool isDirected);
+    void clearEdges();
+    bool addEdge(int source, int destination);
+    bool removeEdge(int source, int destination);
 
-    bool detectCycle() const;  // method to detect cycles using the appropriate strategy
+    bool detectCycle() const;
 
-    bool isDirected() const;  // expose configuration for GUI rendering
-    int vertexCount() const;  // expose vertex count for GUI rendering
-    QVector<QVector<int>> getAdjacencyList() const;  // allow GUI to inspect adjacency data
-    const QString& getLastError() const;  // expose last validation or processing error
+    bool isDirected() const;
+    int vertexCount() const;
+    QVector<QVector<int>> getAdjacencyList() const;
+    const QString& getLastError() const;
 
 private:
-    bool detectCycleUndirected() const;  // helper dedicated to undirected cycle detection via Union-Find
-    bool detectCycleDirected() const;  // helper dedicated to directed cycle detection via DFS recursion
-    bool depthFirstDetectDirected(int vertex, QVector<bool>& visited, QVector<bool>& recursionStack) const;  // recursive DFS utility
-    bool isValidVertex(int index) const;  // helper to verify vertex indices before use
-    void setError(const QString& message) const;  // record a human-readable error for GUI consumption
-    void clearError() const;  // reset error indicator when operations succeed
+    bool detectCycleUndirected() const;
+    bool detectCycleDirected() const;
+    bool depthFirstDetectDirected(int vertex, QVector<bool>& visited, QVector<bool>& recursionStack) const;
+    bool isValidVertex(int index) const;
+    void setError(const QString& message) const;
+    void clearError() const;
 
-    void clearAdjacency();  // free all adjacency nodes
-    void appendNeighbor(int source, int destination);  // add neighbor to adjacency list
+    void clearAdjacency();
+    void appendNeighbor(int source, int destination);
 
-    int vertexCount_;  // number of vertices in the graph
-    bool isDirected_;  // flag indicating whether edges should be treated as directed or undirected
-    AdjNode** adjacency_{nullptr};  // array of adjacency list heads (linked lists)
-    mutable QString lastError_;  // stores the most recent error so GUI can display it even from const methods
+    int vertexCount_;
+    bool isDirected_;
+    AdjNode** adjacency_{nullptr};
+    mutable QString lastError_;
 };
